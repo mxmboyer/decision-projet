@@ -2,6 +2,8 @@ import random
 
 from network import *
 
+from rejet import *
+
 def read_file():
     networks = list()
     f = open("bn.bif", "r")
@@ -39,15 +41,40 @@ def read_network(network, lines, n):
                 nn = n+1
                 while(lines[nn] != "}\n"):
                     probaline = lines[nn].split(")")
+                    cond = probaline[0].strip().split("(")[1].split(", ")
+                    txt = ""
+                    for c in cond:
+                        if(c == "True"):
+                            txt += "1"
+                        elif(c == "False"):
+                            txt += "0"
+                        else:
+                            print("erreur lecture sachants probabilité")
                     tabproba = [
-                        probaline[0].strip() + ")",
+                        txt,
                         probaline[1].split()[0].split(",")[0],
                         probaline[1].split()[1].split(";")[0]
                     ]
                     var.add_proba(tabproba)
                     nn += 1
-        elif(line_split[0] == "Prob("):
-            pass #revenir sur read_file après
+        elif(line.split("(")[0] == "Prob"):
+            l = ""
+            for ll in line_split:
+                l += ll
+            var = network.variables[l.split("|")[0].split("(")[1]]
+            rq = Request(var)
+            tab_sachants = l.split("|")[1].split(")")[0].split(",")
+            for ts in tab_sachants:
+                sachant = network.variables[ts.split("=")[0]]
+                if(ts.split("=")[1].lower() == "true" or ts.split("=")[1].lower() == "1"):
+                    rq.add_sachant(sachant, "1")
+                elif(ts.split("=")[1].lower() == "false" or ts.split("=")[1].lower() == "0"):
+                    rq.add_sachant(sachant, "0")
+            probas = l.split("[")[1].split("]")[0].split(",")
+            rq.add_proba(probas[0], 1)
+            rq.add_proba(probas[1], 0)
+            network.add_request(rq)
+            break
         n += 1
 
 
@@ -66,6 +93,9 @@ def tirage_var(variables):
     return int(random.random() * len(variables))
 
 test = read_file()
-print(test[0].variables["Alarm"].name)
-print(test[0].variables["Alarm"].sachants)
-print(test[0].variables["Alarm"].proba)
+#print(test[0].variables["Alarm"].name)
+#print(test[0].variables["Alarm"].sachants)
+#print(test[0].variables["Alarm"].proba)
+
+rej = Reject(test[2])
+rej.solve(10)
