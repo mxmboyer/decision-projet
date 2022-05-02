@@ -3,6 +3,7 @@ import random
 from network import *
 
 from rejet import *
+from gibbs import *
 
 def read_file():
     networks = list()
@@ -98,4 +99,7 @@ test = read_file()
 #print(test[0].variables["Alarm"].proba)
 
 rej = Reject(test[2])
-rej.solve(10)
+rej.solve(100)
+
+gibbs = Gibbs(test[2])
+gibbs.solve(100)
