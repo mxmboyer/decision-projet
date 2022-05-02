@@ -63,7 +63,7 @@ class Reject:
                 compte[1] += 1
         resultat[0] = compte[1]/nbr_echant
         resultat[1] = compte[0]/nbr_echant
-        print('résultat trouvé: ' + str(resultat) + ' et resultat attendu: ' + str(self.network.request.proba))
+        print('résultat trouvé avec les rejets: ' + str(resultat))
         
 
             

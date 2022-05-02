@@ -2,9 +2,11 @@ class Network:
     def __init__(self, name):
         self.name = name
         self.variables = dict()
+        self.ordre_var = list()
 
     def add_variable(self, var):
         self.variables[var.name] = var
+        self.ordre_var.append(var)
 
     def add_request(self, rq):
         self.request = rq
