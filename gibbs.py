@@ -9,9 +9,15 @@ def tirage(proba_true):
     return 0
 
 class Gibbs:
+    # Constructeur de la classe Gibbs qui implémente l'échantillonnage de Gibbs
+    # n : une instance de la classe Network (voir network.py pour l'implémentation d'un réseau)
     def __init__(self, n):
         self.network = n
 
+    # Implémentation du tirage d'un échantillon avec la méthode de Gibbs
+    # return : une liste de 2 entiers :
+    #       - le 1er représente la proba normalisé du false pour cet échantillon
+    #       - le 2e représente la proba normalisé du true pour cet échantillon
     def echantillon(self):
         var_fixed = dict()
         tab_var = dict()
@@ -41,7 +47,11 @@ class Gibbs:
         compte[0] = compte[0] / total
         compte[1] = compte[1] / total
         return compte
-        
+
+    # La fonction principale. Elle s'occupe de générer le nombre d'échantillons demandés
+    # et de calculer ensuite la moyenne des probas pour chacune des valeurs
+    # nbr_echant : un entier représentant le nombre d'échantillons à générer
+    #               ce nombre peut être changé par l'utilisateur à sa guise dans main.py
     def solve(self, nbr_echant):
         echantillons = list()
         while(len(echantillons) < nbr_echant):

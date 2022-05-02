@@ -6,9 +6,13 @@ from rejet import *
 from gibbs import *
 from likelihood_weighting import *
 
-def read_file():
+
+# Cette fonction s'occupe de lire les données d'un fichier
+# file_name : une chaîne de caractères contenant le chemin du fichier à lire
+# return : un liste d'instances de la classe Network
+def read_file(file_name):
     networks = list()
-    f = open("bn.bif", "r")
+    f = open(file_name, "r")
     lines = f.readlines()
     for n in range(len(lines)):
         line = lines[n]
@@ -19,6 +23,11 @@ def read_file():
     f.close()
     return networks
 
+# Cette fonction s'occupe de lire les informations d'un réseau et de mettre ces informations
+# dans une instance de la classe Network
+# network : une instance de la classe Network dans laquelle les informations du réseau seront rentrées
+# lines : une liste contenant les lignes du fichier à lire
+# n : un entier permettant de savoir à quelle ligne en est la lecture
 def read_network(network, lines, n):
     while(n < len(lines)):
         line = lines[n]
@@ -94,7 +103,7 @@ def tirage(proba_true):
 def tirage_var(variables):
     return int(random.random() * len(variables))
 
-test = read_file()
+test = read_file("bn.bif")
 #print(test[0].variables["Alarm"].name)
 #print(test[0].variables["Alarm"].sachants)
 #print(test[0].variables["Alarm"].proba)
