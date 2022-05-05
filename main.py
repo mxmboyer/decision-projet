@@ -1,4 +1,5 @@
 import random
+import pandas as pd
 
 from network import *
 
@@ -82,37 +83,45 @@ def read_network(network, lines, n):
                 elif(ts.split("=")[1].lower() == "false" or ts.split("=")[1].lower() == "0"):
                     rq.add_sachant(sachant, "0")
             probas = l.split("[")[1].split("]")[0].split(",")
-            rq.add_proba(probas[0], 1)
-            rq.add_proba(probas[1], 0)
+            rq.add_proba(probas[0], 0)
+            rq.add_proba(probas[1], 1)
             network.add_request(rq)
             break
         n += 1
 
-
-def tirage(proba_true):
-    #retourne 1 si true et 0 si false
-    x = random.random()
-    #de 0 à proba true -> true sinon false
-    if(x<=proba_true):
-        return 1
-    return 0
-    
-    
-#en param: la variable a tirer et les variables fixées si existantes
-
-def tirage_var(variables):
-    return int(random.random() * len(variables))
-
 test = read_file("bn.bif")
-#print(test[0].variables["Alarm"].name)
-#print(test[0].variables["Alarm"].sachants)
-#print(test[0].variables["Alarm"].proba)
+reseau = 1
+nbr_echantillons = 1000000
 
-rej = Reject(test[2])
-rej.solve(10)
+print(test[reseau].request)
 
-gibbs = Gibbs(test[2])
-gibbs.solve(10)
+for r in range(1, 2):
+    rej = Reject(test[r])
+    resultat = list()
+    n = 0
+    while(n < nbr_echantillons):
+        resultat.append(rej.solve(1000))
+        n += 1000
+    df_rej = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
+    df_rej.to_csv("rejet_" + test[r].name + ".csv", index=False)
+'''
+for r in range(5):
+    likelihood_weighting = Likelihood_weighting(test[r])
+    resultat = list()
+    n = 0
+    while(n < nbr_echantillons):
+        resultat.append(likelihood_weighting.solve(1000))
+        n += 1000
+    df_lw = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
+    df_lw.to_csv("lw_" + test[r].name + ".csv", index=False)
 
-likelihood_weighting = Likelihood_weighting(test[2])
-likelihood_weighting.solve(10)
+for r in range(5):                  
+    gibbs = Gibbs(test[r])                   
+    resultat = list()
+    n = 0
+    while(n < nbr_echantillons):
+        resultat.append(gibbs.solve(1000))
+        n += 1000
+    df_g = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
+    df_g.to_csv("gibbs_" + test[r].name + ".csv", index=False)
+'''

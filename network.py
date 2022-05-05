@@ -6,7 +6,6 @@ class Network:
 
     def add_variable(self, var):
         self.variables[var.name] = var
-        self.ordre_var.append(var)
 
     def add_request(self, rq):
         self.request = rq
@@ -54,7 +53,7 @@ class Request:
         for s in self.sachants:
             txt += s.name + "=" + self.sachants[s] + ", "
         txt += "\nexact probability : "
-        txt += "1=" + self.proba[1] + ", "
-        txt += "0=" + self.proba[0]
+        txt += "0=" + self.proba[0] + " , "
+        txt += "1=" + self.proba[1]
         return txt
             
