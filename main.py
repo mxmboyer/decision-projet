@@ -1,4 +1,5 @@
 import random
+import time
 import pandas as pd
 
 from network import *
@@ -95,7 +96,9 @@ nbr_echantillons = 1000000
 
 print(test[reseau].request)
 
-for r in range(1, 2):
+
+'''
+for r in range(1, 5):
     rej = Reject(test[r])
     resultat = list()
     n = 0
@@ -104,7 +107,7 @@ for r in range(1, 2):
         n += 1000
     df_rej = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
     df_rej.to_csv("rejet_" + test[r].name + ".csv", index=False)
-'''
+
 for r in range(5):
     likelihood_weighting = Likelihood_weighting(test[r])
     resultat = list()
@@ -124,4 +127,43 @@ for r in range(5):
         n += 1000
     df_g = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
     df_g.to_csv("gibbs_" + test[r].name + ".csv", index=False)
+
+for r in range(5):
+    likelihood_weighting = Likelihood_weighting(test[r])
+    resultat = list()
+    n = 1000
+    while(n < nbr_echantillons):
+        start = time.time()
+        likelihood_weighting.solve(n)
+        temps = time.time() - start
+        resultat.append(temps)
+        n += 1000
+    df_lw = pd.DataFrame(resultat, columns=["temps_execution"])
+    df_lw.to_csv("lw_time_" + test[r].name + ".csv", index=False)
 '''
+
+for r in range(3, 5):                  
+    gibbs = Gibbs(test[r])                   
+    resultat = list()
+    n = 1000
+    while(n < nbr_echantillons):
+        start = time.time()
+        gibbs.solve(n)
+        temps = time.time() - start
+        resultat.append(temps)
+        n += 1000
+    df_g = pd.DataFrame(resultat, columns=["temps_execution"])
+    df_g.to_csv("gibbs_time_" + test[r].name + ".csv", index=False)
+
+for r in range(1, 5):
+    rej = Reject(test[r])
+    resultat = list()
+    n = 1000
+    while(n < 100000):
+        start = time.time()
+        rej.solve(n)
+        temps = time.time() - start
+        resultat.append(temps)
+        n += 1000
+    df_rej = pd.DataFrame(resultat, columns=["temps_execution"])
+    df_rej.to_csv("rejet_time_" + test[r].name + ".csv", index=False)
