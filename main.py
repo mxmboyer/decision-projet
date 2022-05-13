@@ -5,7 +5,7 @@ import pandas as pd
 from network import *
 
 from rejet import *
-from gibbs import *
+from gibbs_analyse import *
 from likelihood_weighting import *
 
 
@@ -117,17 +117,13 @@ for r in range(5):
         n += 1000
     df_lw = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
     df_lw.to_csv("lw_" + test[r].name + ".csv", index=False)
-
-for r in range(5):                  
-    gibbs = Gibbs(test[r])                   
-    resultat = list()
-    n = 0
-    while(n < nbr_echantillons):
-        resultat.append(gibbs.solve(1000))
-        n += 1000
+'''
+for r in range(5):
+    gibbs = Gibbs(test[r])
+    resultat = gibbs.solve(nbr_echantillons, 1000)
     df_g = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
     df_g.to_csv("gibbs_" + test[r].name + ".csv", index=False)
-
+'''
 for r in range(5):
     likelihood_weighting = Likelihood_weighting(test[r])
     resultat = list()
@@ -140,7 +136,7 @@ for r in range(5):
         n += 1000
     df_lw = pd.DataFrame(resultat, columns=["temps_execution"])
     df_lw.to_csv("lw_time_" + test[r].name + ".csv", index=False)
-'''
+
 
 for r in range(3, 5):                  
     gibbs = Gibbs(test[r])                   
@@ -167,3 +163,4 @@ for r in range(1, 5):
         n += 1000
     df_rej = pd.DataFrame(resultat, columns=["temps_execution"])
     df_rej.to_csv("rejet_time_" + test[r].name + ".csv", index=False)
+'''

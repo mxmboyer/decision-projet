@@ -57,7 +57,7 @@ class Gibbs:
     # et de calculer ensuite la moyenne des probas pour chacune des valeurs
     # nbr_echant : un entier représentant le nombre d'échantillons à générer
     #       ce nombre peut être changé par l'utilisateur à sa guise dans main.py
-    def solve(self, nbr_echant):
+    def solve(self, nbr_echant, arret):
         etat = dict()
         var_to_fix = list()
         for name, var in self.network.variables.items():
@@ -66,17 +66,15 @@ class Gibbs:
             else:
                 etat[name] = tirage(0.5)
                 var_to_fix.append(var)
-        compte = list()
-        for i in range(nbr_echant):
-            compte_temp, etat = self.echantillon(etat, var_to_fix)
-            compte.append(compte_temp)
+        final_result = list()
         resultat = [0, 0]
-        for c in compte:
-            resultat[0] += c[0]
-            resultat[1] += c[1]
-        total = resultat[0] + resultat[1]
-        resultat[0] = resultat[0] / total
-        resultat[1] = resultat[1] / total
+        for i in range(nbr_echant):
+            compte, etat = self.echantillon(etat, var_to_fix)
+            if(i % arret == 0):
+                resultat[0] += compte[0]
+                resultat[1] += compte[1]
+                total = resultat[0] + resultat[1]
+                final_result.append([resultat[0] / total, resultat[1] / total])
         #print("resultat trouvé avec Gibbs : " + str(resultat))
-        return resultat
+        return final_result
 
