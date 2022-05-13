@@ -38,7 +38,7 @@ class Gibbs:
                     children.append(var_for)
             tab_proba = [0, 0]
             for i in range(2):
-                tab_proba[i] = float(var.proba[prob][1-i])
+                tab_proba[i] = float(var.proba[prob][i])
                 etat[var.name] = i
                 for c in children:
                     tab_proba[i] *= float(c.proba[self.list_sachants_var(c, etat)][etat[c.name]])
@@ -61,8 +61,8 @@ class Gibbs:
         etat = dict()
         var_to_fix = list()
         for name, var in self.network.variables.items():
-            if(name in self.network.request.sachants.keys()):
-                etat[name] = int(self.network.request.sachants[name])
+            if(var in self.network.request.sachants.keys()):
+                etat[name] = int(self.network.request.sachants[var])
             else:
                 etat[name] = tirage(0.5)
                 var_to_fix.append(var)
@@ -77,6 +77,6 @@ class Gibbs:
         total = resultat[0] + resultat[1]
         resultat[0] = resultat[0] / total
         resultat[1] = resultat[1] / total
-        #print("resultat trouvé avec Gibbs : " + str(resultat))
+        print("resultat trouvé avec Gibbs : " + str(resultat))
         return resultat
 

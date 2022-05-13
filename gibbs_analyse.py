@@ -8,7 +8,7 @@ def tirage(proba_true):
         return 1
     return 0
 
-class Gibbs:
+class Gibbs_Analyse:
     # Constructeur de la classe Gibbs qui implémente l'échantillonnage de Gibbs
     # n : une instance de la classe Network (voir network.py pour l'implémentation d'un réseau)
     def __init__(self, n):
@@ -38,7 +38,7 @@ class Gibbs:
                     children.append(var_for)
             tab_proba = [0, 0]
             for i in range(2):
-                tab_proba[i] = float(var.proba[prob][1-i])
+                tab_proba[i] = float(var.proba[prob][i])
                 etat[var.name] = i
                 for c in children:
                     tab_proba[i] *= float(c.proba[self.list_sachants_var(c, etat)][etat[c.name]])
@@ -61,8 +61,8 @@ class Gibbs:
         etat = dict()
         var_to_fix = list()
         for name, var in self.network.variables.items():
-            if(name in self.network.request.sachants.keys()):
-                etat[name] = int(self.network.request.sachants[name])
+            if(var in self.network.request.sachants.keys()):
+                etat[name] = int(self.network.request.sachants[var])
             else:
                 etat[name] = tirage(0.5)
                 var_to_fix.append(var)

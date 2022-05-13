@@ -20,13 +20,13 @@ class Reject:
                 var_fixed[name] = -1
         for name, var in self.network.variables.items():
             if(len(var.sachants) == 0):
-                resultat = tirage(var.proba["null"][0])
+                resultat = tirage(var.proba["null"][1])
                 var_fixed[name] = resultat
             else:
                 prob = ""
                 for sachant in var.sachants:
                     prob += str(var_fixed[sachant.name])
-                resultat = tirage(var.proba[prob][0])
+                resultat = tirage(var.proba[prob][1])
                 var_fixed[name] = resultat
         return var_fixed
                                     
@@ -51,7 +51,7 @@ class Reject:
                 compte[1] += 1
         resultat[0] = compte[0]/nbr_echant
         resultat[1] = compte[1]/nbr_echant
-        #print('résultat trouvé avec les rejets: ' + str(resultat))
+        print('résultat trouvé avec les rejets: ' + str(resultat))
         return resultat
         
 

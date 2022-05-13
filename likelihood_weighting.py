@@ -22,22 +22,22 @@ class Likelihood_weighting:
         for name, var in self.network.variables.items():
             if(var_fixed[name] == -1):
                 if(len(var.sachants) == 0):
-                    resultat = tirage(var.proba["null"][0])
+                    resultat = tirage(var.proba["null"][1])
                     var_fixed[name] = resultat
                 else:
                     prob = ""
                     for sachant in var.sachants:
                         prob += str(var_fixed[sachant.name])
-                    resultat = tirage(var.proba[prob][0])
+                    resultat = tirage(var.proba[prob][1])
                     var_fixed[name] = resultat
             else:
                 if(len(var.sachants) == 0):
-                    w = w * float(var.proba["null"][1 - var_fixed[name]])
+                    w = w * float(var.proba["null"][var_fixed[name]])
                 else:
                     prob = ""
                     for sachant in var.sachants:
                         prob += str(var_fixed[sachant.name])
-                    w = w * float(var.proba[prob][1 - var_fixed[name]])
+                    w = w * float(var.proba[prob][var_fixed[name]])
         return var_fixed, w
                     
 
@@ -55,7 +55,7 @@ class Likelihood_weighting:
             total += w
         resultat[0] = compte[0]/total
         resultat[1] = compte[1]/total
-        #print('résultat trouvé pour likelihood weighting: ' + str(resultat))
+        print('résultat trouvé pour likelihood weighting: ' + str(resultat))
         return resultat
             
             

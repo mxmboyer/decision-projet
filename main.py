@@ -5,6 +5,7 @@ import pandas as pd
 from network import *
 
 from rejet import *
+from gibbs import *
 from gibbs_analyse import *
 from likelihood_weighting import *
 
@@ -41,8 +42,8 @@ def read_network(network, lines, n):
             if line_split[3] == ")":
                 probaline = lines[n+1].split()
                 tabproba = [
-                    probaline[1].split(",")[0],
-                    probaline[2].split(";")[0]
+                    probaline[2].split(";")[0],
+                    probaline[1].split(",")[0]
                 ]
                 network.variables[line_split[2]].add_proba(tabproba)
             else:
@@ -65,8 +66,8 @@ def read_network(network, lines, n):
                             print("erreur lecture sachants probabilité")
                     tabproba = [
                         txt,
-                        probaline[1].split()[0].split(",")[0],
-                        probaline[1].split()[1].split(";")[0]
+                        probaline[1].split()[1].split(";")[0],
+                        probaline[1].split()[0].split(",")[0]
                     ]
                     var.add_proba(tabproba)
                     nn += 1
@@ -91,13 +92,23 @@ def read_network(network, lines, n):
         n += 1
 
 test = read_file("bn.bif")
-reseau = 1
+reseau = 0
 nbr_echantillons = 1000000
 
 print(test[reseau].request)
 
-
 '''
+gibbs = Gibbs(test[reseau])
+gibbs.solve(10)
+
+likelihood_weighting = Likelihood_weighting(test[reseau])
+likelihood_weighting.solve(10000)
+
+print(test[2].request)
+rej = Reject(test[2])
+rej.solve(100)
+
+
 for r in range(1, 5):
     rej = Reject(test[r])
     resultat = list()
@@ -119,7 +130,7 @@ for r in range(5):
     df_lw.to_csv("lw_" + test[r].name + ".csv", index=False)
 '''
 for r in range(5):
-    gibbs = Gibbs(test[r])
+    gibbs = Gibbs_Analyse(test[r])
     resultat = gibbs.solve(nbr_echantillons, 1000)
     df_g = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
     df_g.to_csv("gibbs_" + test[r].name + ".csv", index=False)
