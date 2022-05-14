@@ -128,13 +128,13 @@ for r in range(5):
         n += 1000
     df_lw = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
     df_lw.to_csv("lw_" + test[r].name + ".csv", index=False)
-'''
+
 for r in range(5):
     gibbs = Gibbs_Analyse(test[r])
     resultat = gibbs.solve(nbr_echantillons, 1000)
     df_g = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
     df_g.to_csv("gibbs_" + test[r].name + ".csv", index=False)
-'''
+
 for r in range(5):
     likelihood_weighting = Likelihood_weighting(test[r])
     resultat = list()
@@ -147,9 +147,8 @@ for r in range(5):
         n += 1000
     df_lw = pd.DataFrame(resultat, columns=["temps_execution"])
     df_lw.to_csv("lw_time_" + test[r].name + ".csv", index=False)
-
-
-for r in range(3, 5):                  
+'''
+for r in range(5):                  
     gibbs = Gibbs(test[r])                   
     resultat = list()
     n = 1000
@@ -161,7 +160,7 @@ for r in range(3, 5):
         n += 1000
     df_g = pd.DataFrame(resultat, columns=["temps_execution"])
     df_g.to_csv("gibbs_time_" + test[r].name + ".csv", index=False)
-
+'''
 for r in range(1, 5):
     rej = Reject(test[r])
     resultat = list()

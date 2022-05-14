@@ -77,6 +77,6 @@ class Gibbs:
         total = resultat[0] + resultat[1]
         resultat[0] = resultat[0] / total
         resultat[1] = resultat[1] / total
-        print("resultat trouvé avec Gibbs : " + str(resultat))
+        #print("resultat trouvé avec Gibbs : " + str(resultat))
         return resultat
 
