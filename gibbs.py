@@ -24,9 +24,10 @@ class Gibbs:
         return prob
 
     # Implémentation du tirage d'un échantillon avec la méthode de Gibbs
-    # return : une liste de 2 entiers :
-    #       - le 1er représente la proba normalisé du false pour cet échantillon
-    #       - le 2e représente la proba normalisé du true pour cet échantillon
+    # etat : l'état des variables que l'on va tenter de perturber
+    # var_to_fix : liste des variables non observées dans la requête à fixer
+    # return : - un tableau qui compte le nombre d'occurences des valeurs de la variable de la requête
+    #          - l'état de l'échantillon à la fin de sa perturbation
     def echantillon(self, etat, var_to_fix):
         compte = [0, 0] #case 0 pour les false et case 1 pour les true
         random.shuffle(var_to_fix)
@@ -53,7 +54,7 @@ class Gibbs:
             compte[etat[self.network.request.var.name]] += 1
         return compte, etat
 
-    # La fonction principale. Elle s'occupe de générer le nombre d'échantillons demandés
+    # La fonction principale. Elle s'occupe de générer le nombre d'échantillons demandé
     # et de calculer ensuite la moyenne des probas pour chacune des valeurs
     # nbr_echant : un entier représentant le nombre d'échantillons à générer
     #       ce nombre peut être changé par l'utilisateur à sa guise dans main.py

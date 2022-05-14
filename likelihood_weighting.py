@@ -9,9 +9,14 @@ def tirage(proba_true):
     return 0
 
 class Likelihood_weighting:
+    # Constructeur de la classe Likelihood_weighting qui implémente cette méthode
+    # n : un réseau intance de la classe Network
     def __init__(self, n):
         self.network = n
 
+    # Permet de trouver un échantillon et de calculer son poids
+    # return : - var_fixed : un dictionnaire permettant de connaitre la valeur de chaque variable pour l'échantillon trouvé
+    #          - w : un nombre qui représente le poids correspondant à cet échantillon
     def echantillon(self):
         w = 1
         var_fixed = dict()
@@ -40,7 +45,9 @@ class Likelihood_weighting:
                     w = w * float(var.proba[prob][var_fixed[name]])
         return var_fixed, w
                     
-
+    # Permet de faire l'échantilonnage et de calculer la normalisation des échantillons pourr trouver la probabilité demandée
+    # nbr_echant : un entier représentant le nombre d'échantillons dans l'échantillonnage
+    # return : la probabilité trouvée grâce à cet échantillonnage
     def solve(self, nbr_echant):
         echantillons = dict()
         compte = [0,0] #case 0: false et case 1: true
@@ -53,9 +60,9 @@ class Likelihood_weighting:
             else:
                 compte[1] += w
             total += w
-        resultat[0] = compte[0]/total
-        resultat[1] = compte[1]/total
-        print('résultat trouvé pour likelihood weighting: ' + str(resultat))
+        resultat[0] = compte[0] / total
+        resultat[1] = compte[1] / total
+        #print('résultat trouvé pour likelihood weighting: ' + str(resultat))
         return resultat
             
             

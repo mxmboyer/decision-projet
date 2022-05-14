@@ -9,9 +9,13 @@ def tirage(proba_true):
     return 0
 
 class Reject:
+    # Constructeur de la classe Rejet qui implémente la méthode des rejets
+    # n : un réseau instance de la classe Network
     def __init__(self, n):
         self.network = n
 
+    # Tire au sort l'état des variables du réseau en respectant les probabilités
+    # return : un dictionnaire avec les variables et leur état respectif
     def echantillon(self):
         var_fixed = dict()
         tab_var_racine = list()
@@ -29,9 +33,13 @@ class Reject:
                 resultat = tirage(var.proba[prob][1])
                 var_fixed[name] = resultat
         return var_fixed
-                                    
+
+    # Fonction principale de la méthode des rejets
+    # Elle vérifie que les échantillons tirés respectent les variables observées de la requête avant de les garder
+    # Elle cumulera tous les échantillons en les normalisant pour approximer les probabilités de la requête
+    # nbr_echant : un entier représentant le nombre d'échantillons voulu par l'utilisateur
+    # return : un tableau de deux nombres représentant les probabilités normalisées
     def solve(self, nbr_echant):
-        #on tire nbr_echant echantillons
         echantillons = list()
         compte = [0,0] #case 0: false et case 1: true
         resultat = [0,0]
@@ -51,7 +59,7 @@ class Reject:
                 compte[1] += 1
         resultat[0] = compte[0]/nbr_echant
         resultat[1] = compte[1]/nbr_echant
-        print('résultat trouvé avec les rejets: ' + str(resultat))
+        #print('résultat trouvé avec les rejets: ' + str(resultat))
         return resultat
         
 

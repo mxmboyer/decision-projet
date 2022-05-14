@@ -92,22 +92,26 @@ def read_network(network, lines, n):
         n += 1
 
 test = read_file("bn.bif")
-reseau = 0
+reseau = 2
 nbr_echantillons = 1000000
 
 print(test[reseau].request)
 
 '''
+        # Exemples d'utilisation des différentes méthodes
+        
 gibbs = Gibbs(test[reseau])
-gibbs.solve(10)
+gibbs.solve(nbr_echantillons)
 
 likelihood_weighting = Likelihood_weighting(test[reseau])
-likelihood_weighting.solve(10000)
+likelihood_weighting.solve(nbr_echantillons)
 
-print(test[2].request)
-rej = Reject(test[2])
+rej = Reject(test[reseau])
 rej.solve(100)
+'''
 
+'''
+        #Analyse de la performance des méthodes
 
 for r in range(1, 5):
     rej = Reject(test[r])
@@ -135,6 +139,10 @@ for r in range(5):
     df_g = pd.DataFrame(resultat, columns=["prob_false", "prob_true"])
     df_g.to_csv("gibbs_" + test[r].name + ".csv", index=False)
 
+
+
+        # Analyse du temps d'exécution des méthodes
+        
 for r in range(5):
     likelihood_weighting = Likelihood_weighting(test[r])
     resultat = list()
@@ -147,7 +155,7 @@ for r in range(5):
         n += 1000
     df_lw = pd.DataFrame(resultat, columns=["temps_execution"])
     df_lw.to_csv("lw_time_" + test[r].name + ".csv", index=False)
-'''
+
 for r in range(5):                  
     gibbs = Gibbs(test[r])                   
     resultat = list()
@@ -160,17 +168,17 @@ for r in range(5):
         n += 1000
     df_g = pd.DataFrame(resultat, columns=["temps_execution"])
     df_g.to_csv("gibbs_time_" + test[r].name + ".csv", index=False)
-'''
-for r in range(1, 5):
+
+for r in range(1, 2):
     rej = Reject(test[r])
     resultat = list()
-    n = 1000
-    while(n < 100000):
+    n = 100000
+    while(n <= 1000000):
         start = time.time()
         rej.solve(n)
         temps = time.time() - start
         resultat.append(temps)
-        n += 1000
+        n += 100000
     df_rej = pd.DataFrame(resultat, columns=["temps_execution"])
     df_rej.to_csv("rejet_time_" + test[r].name + ".csv", index=False)
 '''
