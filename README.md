@@ -10,4 +10,6 @@ pip install matplotlib
 ```
 
 ## Exécution
-[à compléter]
+Vous trouverez dans le fichier main.py quelques exemples d'exécution des différentes méthodes.
+
+Egalement, dans le fichier .py de chaque méthode vous avez un affichage mis en commentaire que vous pouvez réactiver.
